@@ -8,3 +8,9 @@ export interface CarDataType {
     availability: boolean;
     price: string;
 }
+
+export interface CarsState {
+	cars: CarDataType[];
+	status: boolean;
+	error: string | null;
+}

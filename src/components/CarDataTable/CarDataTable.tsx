@@ -1,25 +1,25 @@
 import React, { Dispatch, FC } from "react";
 import { 
-  Table, 
-  Thead, 
-  Tr, 
-  Th, 
-  Tbody, 
-  Td, 
-  TableContainer} from "@chakra-ui/react";
+    Table, 
+    Thead, 
+    Tr, 
+    Th, 
+    Tbody, 
+    Td, 
+    TableContainer} from "@chakra-ui/react";
 import { 
-  getCoreRowModel, 
-  useReactTable, 
-  flexRender, 
-  ColumnDef, 
-  FilterFn, 
-  getFilteredRowModel, 
-  getPaginationRowModel,  
+    getCoreRowModel, 
+    useReactTable, 
+    flexRender, 
+    ColumnDef, 
+    FilterFn, 
+    getFilteredRowModel, 
+    getPaginationRowModel,  
 } from "@tanstack/react-table";
+import { rankItem } from "@tanstack/match-sorter-utils";
 
 import Pagination from "../Pagination/Pagination";
 
-import { rankItem } from "@tanstack/match-sorter-utils";
 import { CarDataType } from "@/types/datatypes";
 
 type CarDataTable = {
@@ -59,8 +59,8 @@ const CarDataTable: FC<CarDataTable> = ({ columns, data, globalFilter, setGlobal
     return (
     <TableContainer 
         backgroundColor="#FFFFFF"  
-        borderRadius={8} 
-        padding={18} 
+        borderRadius="8px" 
+        padding="18px" 
         display="flex" 
         flexDirection="column"  
         alignItems="center"

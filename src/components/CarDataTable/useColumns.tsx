@@ -1,43 +1,7 @@
 import { CarDataType } from "@/types/datatypes"
-import { Box, Button } from "@chakra-ui/react"
 import { createColumnHelper } from "@tanstack/react-table"
 
-const renderActions = (status: boolean) => {
-    return (
-        <Box
-            display="flex"
-            justifyContent="center"
-            padding={5} gap={10}
-            border={status ? "none" : "1px solid red"}
-            borderRadius={10}
-        >
-            <Button 
-                color="blue"
-                backgroundColor="#FFFF"
-                border="1px solid blue" 
-                borderRadius={10}
-                padding={5}
-                width={55}
-                height={30}
-                textAlign="center"
-            >
-                Edit
-            </Button>
-            <Button 
-                color="red"
-                backgroundColor="#FFFF"
-                border="1px solid red" 
-                borderRadius={10}
-                padding={5}
-                width={55}
-                height={30}
-                textAlign="center"
-            >
-                Delete
-            </Button>
-        </Box>
-    )
-  }
+import RenderActions from "../RenderActions/RenderActions";
 
 export const useCarColumns = () => {
     const columnHelper = createColumnHelper<CarDataType>()
@@ -77,7 +41,7 @@ export const useCarColumns = () => {
     }),
     columnHelper.accessor(() => null, {
         id: 'actions',
-        cell: ({row}) => renderActions(row.original.availability),
+        cell: ({ row }) => <RenderActions id={row.original.id} />,
         header: () => 'Actions',
         size: 300
     }),

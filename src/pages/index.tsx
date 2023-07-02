@@ -1,34 +1,23 @@
 import { useState } from 'react';
-import { Box, Button, Input, Text } from '@chakra-ui/react';
-import { ChakraProvider } from '@chakra-ui/react'
+import {
+  ChakraProvider,
+  Box,
+  Input,
+  Spinner,
+  Text,
+  Center
+} from '@chakra-ui/react'
+
 import Image from 'next/image';
-import { Inter } from '@next/font/google';
 
 import { useFetchData } from '@/hooks/useFetchData';
 
 import CarDataTable from '@/components/CarDataTable/CarDataTable';
 import { useCarColumns } from '@/components/CarDataTable/useColumns';
+import AdditionModal from '@/components/Modal/AdditionModal/AdditionModal';
 
 import WheelIcon from '@/icons/car-tire-wheel-icon.svg'
 import { CarDataType } from '@/types/datatypes';
-
-
-
-const inter = Inter({ subsets: ['latin'] })
-
-const theme = {
-  styles: {
-    global: {
-      'html, body': {
-        fontFamily: inter.style.fontFamily,
-        color: '#33404A',
-        fontSize: 14,
-        textAlign: 'center'
-      },
-    },
-  },
-}
-
 
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -39,17 +28,47 @@ const Home = () => {
   const carColumns = useCarColumns();
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <ChakraProvider>
+        <Center
+          w="100vw"
+          h="100vh"
+          display="flex"
+          flexDirection="column"
+        >
+          <Spinner
+            thickness="4px"
+            speed="0.45s"
+            emptyColor="gray"
+            color="blue"
+            width="50px"
+            height="50px"
+          />
+          <p>Loading...</p>
+        </Center>
+      </ChakraProvider>
+    );
   }
   if (error) {
-    return <p>An error has occurred: {error.message}</p>;
+    return (
+      <ChakraProvider>
+        <Center
+          w="100vw"
+          h="100vh"
+          display="flex"
+          flexDirection="column"
+        >
+          <p>An error has occurred: {error.message}</p>
+        </Center>
+      </ChakraProvider>
+    );
   }
   if (!cars) {
     return null;
   }
 
   return (
-    <ChakraProvider theme={theme}>
+    <ChakraProvider>
       <Box
         display="flex"
         flexDirection="column"
@@ -59,28 +78,28 @@ const Home = () => {
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          margin={16}
+          margin="16px"
         >
           <Box
             display="flex"
-            gap={8}
+            gap="8px"
           >
             <Image src={WheelIcon} alt="icon" width="26" />
             <Text
-              fontSize={24}
+              fontSize="24px"
               fontWeight="700"
               lineHeight="28px"
             >
-              Our car offers catalog
+              Car catalog
             </Text>
           </Box>
           <Input
             width="700px"
             height="40px"
             border="1px solid #D9E2EA"
-            borderRadius={8}
-            padding={10}
-            placeholder='Search'
+            borderRadius="8px"
+            padding="10px"
+            placeholder="Search"
             value={searchQuery}
             onChange={val => setSearchQuery(val.target.value)}
           />
@@ -88,28 +107,7 @@ const Home = () => {
             display="flex" 
             gap={16} 
           >
-            <Button 
-              color="#FFFF"
-              backgroundColor="blue"
-              borderRadius={8}
-              padding={7}
-              fontSize={16}
-              width={80}
-              height={32}
-            >
-              + Add
-            </Button>
-            <Button 
-              color="blue"
-              backgroundColor="#FFFF"
-              borderRadius={8}
-              padding={7}
-              fontSize={16}
-              width="80px"
-              height="32px"
-            >
-              Filter
-            </Button>
+            <AdditionModal />
           </Box>
         </Box>
           <CarDataTable 
@@ -122,5 +120,5 @@ const Home = () => {
     </ChakraProvider>
   )
 }
-  
-  export default Home;
+
+export default Home;

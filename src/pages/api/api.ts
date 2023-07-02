@@ -7,6 +7,7 @@ const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImFzIiwicGFz
 axios.defaults.baseURL = 'https://myfakeapi.com/api';
 
 export const CarsAPI = {
+
 	async getCars() {
 		const { data } = await axios.get<{cars: CarDataType[]}>(`/cars`,
 			{

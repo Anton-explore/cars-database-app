@@ -29,11 +29,11 @@ const Pagination: React.FC<PaginationProps> = ({ data, table }) => {
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          <ArrowBackIcon fontSize={14} />
+          <ArrowBackIcon fontSize="14px" />
         </button>
         <Text
-          fontSize={14}
-          padding={5}
+          fontSize="14px"
+          padding="5px"
         >
           Page{' '}
           {table.getState().pagination.pageIndex + 1} of{' '}
@@ -43,7 +43,7 @@ const Pagination: React.FC<PaginationProps> = ({ data, table }) => {
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          <ArrowForwardIcon fontSize={14} />
+          <ArrowForwardIcon fontSize="14px" />
         </button>
       </Box>
       <select
