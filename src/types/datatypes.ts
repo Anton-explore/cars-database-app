@@ -11,6 +11,6 @@ export interface CarDataType {
 
 export interface CarsState {
 	cars: CarDataType[];
-	status: boolean;
+	isLoading: boolean;
 	error: string | null;
 }

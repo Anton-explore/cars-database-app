@@ -10,7 +10,8 @@ import { selectCarsState } from '@/store/selectors';
 
 export const useFetchData = () => {
   const dispatch = useAppDispatch();
-  const { cars, status, error } = useAppSelector(selectCarsState);
+  dispatch(getCarsRequest());
+  const { cars, isLoading, error } = useAppSelector(selectCarsState);
 
   // const [error, setError] = useState<any>(null);
   // const [isLoading, setIsLoading] = useState(false);
@@ -30,9 +31,9 @@ export const useFetchData = () => {
     //   }
     // }
     // fetchCars()
-    dispatch(getCarsRequest());
+    
 
-  }, [dispatch]);
+  }, []);
 
   return {
     cars,

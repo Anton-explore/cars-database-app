@@ -37,6 +37,8 @@ import {
 import { useFetchData } from '@/hooks/useFetchData'
 import { CarDataType } from '@/types/datatypes'
 import { generateId } from '@/utils/generateId'
+import { useAppDispatch } from '@/hooks/reduxHooks';
+import { addCarRequest, updateCarRequest } from '@/store/carsSlice';
 
 
 const initialFormState: CarDataType = {
@@ -53,8 +55,9 @@ const initialFormState: CarDataType = {
 type CarComponentProps = { id?: number; isOpen: boolean; onClose: () => void };
 
 const CarComponent = ({ id, onClose, isOpen }: CarComponentProps) => {
+    const dispatch = useAppDispatch();
     const toast = useToast()
-    const { cars } = useFetchData();
+    const { cars, error } = useFetchData();
     const updatedCar = cars?.find((car) => car.id === id);
 
     const [newCar, setNewCar] = useState<CarDataType>(initialFormState);
@@ -90,17 +93,22 @@ const CarComponent = ({ id, onClose, isOpen }: CarComponentProps) => {
 
     const savingHandler = (values: CarDataType) => {
         if (id) {
+            dispatch(updateCarRequest({ car: values, id }));
             console.log(values);
         } else {
+            dispatch(addCarRequest({ car: values }));
             console.log("Create: ", values);
         }
-        toast({
-          description: id ? "Successfully updated." : "Successfully created.",
-          status: 'success',
-          duration: 7000,
-          isClosable: true,
-        })
-        onClose();
+        if (!error) {
+            toast({
+            description: id ? "Successfully updated." : "Successfully created.",
+            status: 'success',
+            duration: 7000,
+            isClosable: true,
+            })
+            onClose();
+        }
+        
     }
 
     return (

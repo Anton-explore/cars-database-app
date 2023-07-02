@@ -13,6 +13,8 @@ import {
 import styled from '@emotion/styled'
 
 import { useFetchData } from '@/hooks/useFetchData';
+import { useAppDispatch } from '@/hooks/reduxHooks';
+import { deleteCarRequest } from '@/store/carsSlice';
 
 const StyledSpan = styled.span`
     font-size: 18px;
@@ -20,13 +22,17 @@ const StyledSpan = styled.span`
 `
 
 const DeletionModal = ({ id }: { id: number }) => {
+    const dispatch = useAppDispatch();
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const { cars } = useFetchData();
-    const deletedCar = cars?.find((car) => car.id === id);
+    const { cars, error } = useFetchData();
+    const deletedCar = cars.find((car) => car.id === id);
 
     const deleteHandler = () => {
+        dispatch(deleteCarRequest({ id }))
         console.log(deletedCar);
-        onClose();
+        if (!error) {
+            onClose();
+        }
     }
 
     return (
