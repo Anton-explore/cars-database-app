@@ -58,7 +58,7 @@ const Home = () => {
           display="flex"
           flexDirection="column"
         >
-          <p>An error has occurred: {error.message}</p>
+          <p>An error has occurred: {error}</p>
         </Center>
       </ChakraProvider>
     );
