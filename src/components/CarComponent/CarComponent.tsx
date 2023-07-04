@@ -128,6 +128,7 @@ const CarComponent = ({ id, onClose, isOpen }: CarComponentProps) => {
                         touched,
                         dirty,
                         isSubmitting,
+                        values,
                         isValid,
                 }) => (
                     
@@ -199,16 +200,17 @@ const CarComponent = ({ id, onClose, isOpen }: CarComponentProps) => {
                                 </FormControl>
                                 )}
                             </Field>
-                            <Field name='availability'>
-                                {({ field }: FieldProps<CarDataType['availability']>) => (
-                                <FormControl>
+                            <Field type="checkbox" name='availability'>
+                                {({ field, form }: FieldProps<CarDataType['availability']>) => (
+                                <FormControl isInvalid={!!errors.availability && touched.availability}>
                                     <FormLabel>Availability</FormLabel>
                                     <Flex align="center" gap="5px">
                                         <Checkbox 
-                                            ml={3} 
-                                            id='availability' 
-                                            {...field} 
+                                            id='availability'        
+                                            ml={3}  
                                             isChecked={field.value}
+                                            onChange={() => form.setFieldValue('availability', !field.value)}
+                                            isDisabled={isSubmitting}
                                         />
                                         <span>Available</span>
                                     </Flex>
