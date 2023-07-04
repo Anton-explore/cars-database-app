@@ -1,5 +1,4 @@
 import {
-    ChakraProvider,
     Button,
     Modal,
     ModalOverlay,
@@ -9,48 +8,39 @@ import {
     ModalFooter,
     ModalCloseButton,
     useDisclosure,
+    useToast
 } from '@chakra-ui/react'
-import styled from '@emotion/styled'
 
-import { useFetchData } from '@/hooks/useFetchData';
-import { useAppDispatch } from '@/hooks/reduxHooks';
-import { deleteCarRequest } from '@/store/carsSlice';
 
-const StyledSpan = styled.span`
-    font-size: 18px;
-    font-weight: bold;
-`
+import { useHomeContext } from '@/components/Home/HomeContext';
+import { RedButton, StyledSpan } from './DeletionModal.style';
 
 const DeletionModal = ({ id }: { id: number }) => {
-    const dispatch = useAppDispatch();
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const { cars, error } = useFetchData();
-    const deletedCar = cars.find((car) => car.id === id);
+    const toast = useToast();
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { cars, error, deleteCar } = useHomeContext();
+    const deletedCar = cars?.find((car) => car.id === id);
 
     const deleteHandler = () => {
-        dispatch(deleteCarRequest({ id }))
-        console.log(deletedCar);
+        deleteCar(id);
         if (!error) {
+            toast({
+            description: "Successfully deleted.",
+            status: 'success',
+            duration: 7000,
+            isClosable: true,
+            })
             onClose();
         }
     }
 
     return (
         <>
-            <Button
-                color="#fff"
-                backgroundColor="red"
-                border="1px solid red"
-                borderRadius="10px"
-                padding="5px"
-                width="55px"
-                height="30px"
-                textAlign="center"
+            <RedButton
                 onClick={onOpen}
             >
                 Delete
-            </Button>
-
+            </RedButton>
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
@@ -61,7 +51,6 @@ const DeletionModal = ({ id }: { id: number }) => {
                         {deletedCar?.car_color} car {deletedCar?.car} {deletedCar?.car_model} {deletedCar?.car_model_year} model year 
                     </StyledSpan> from database?
                 </ModalBody>
-
                 <ModalFooter>
                     <Button colorScheme='blue' mr={5} onClick={onClose}>
                     Close

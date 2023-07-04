@@ -1,39 +1,33 @@
-// import { useEffect, useState } from 'react';
-// import { CarsAPI } from '@/pages/api/api';
-// import { CarDataType } from '@/types/datatypes';
+import { useEffect, useState } from 'react';
+import { CarDataType } from '@/types/datatypes';
 
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from './reduxHooks';
+import { CarsAPI } from '@/services/cars';
 
-import { getCarsRequest } from '@/store/carsSlice';
-import { selectCarsState } from '@/store/selectors';
 
 export const useFetchData = () => {
-  const dispatch = useAppDispatch();
-  dispatch(getCarsRequest());
-  const { cars, isLoading, error } = useAppSelector(selectCarsState);
+  const [error, setError] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [cars, setCars] = useState<CarDataType[] | null>(null);
 
-  // const [error, setError] = useState<any>(null);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [cars, setCars] = useState<CarDataType[] | null>(null);
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      const carsDataFromStorage = localStorage.getItem('carsData');
+      if (!carsDataFromStorage) {
+        const carsData = await CarsAPI.getCars();
+        setCars(carsData);
+        
+      }
+    } catch (error) {
+      setError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   useEffect(() => {
-    
-    // const fetchCars = async () => {
-    //   setIsLoading(true);
-    //   try {
-    //     const carsArr: CarDataType[] = await CarsAPI.getCars();
-    //     setCars(carsArr);
-    //   } catch (error) {
-    //     setError(error);
-    //   } finally {
-    //     setIsLoading(false);
-    //   }
-    // }
-    // fetchCars()
-    
-
-  }, []);
+    fetchData();
+  }, [])
 
   return {
     cars,

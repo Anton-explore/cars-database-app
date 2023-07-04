@@ -13,22 +13,12 @@ import DeletionModal from "../Modal/DeletionModal/DeletionModal";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 
 const RenderActions = ({ id }: { id: number}) => {
-    // const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-    // const toggleMenu = () => {
-    //     setIsMenuOpen(!isMenuOpen);
-    // };
-
-    // const handleButtonClick = () => {
-    //     setIsMenuOpen(false); 
-    // };
 
     return (
         <Box
             display="flex"
             flexDirection="column"
             justifyContent="center"
-            // alignItems="center"
         >
             <Menu>
                 {({ isOpen }) => (
@@ -52,30 +42,6 @@ const RenderActions = ({ id }: { id: number}) => {
                     </>
                 )}
             </Menu>
-
-            {/* <Button
-                color="blue"
-                backgroundColor="#FFFF"
-                borderRadius={8}
-                padding={5}
-                fontSize={16}
-                width={80}
-                height={32}
-                onClick={toggleMenu}
-            >
-              Open Menu
-            </Button>
-            {isMenuOpen && (<Box
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
-                // alignItems="center"
-                padding={5} gap={10}
-                borderRadius={10}
-            >
-                <EditionModal id={id} />
-                <DeletionModal id={id} />
-            </Box>)} */}
         </Box>
     )
 }

@@ -14,3 +14,13 @@ export interface CarsState {
 	isLoading: boolean;
 	error: string | null;
 }
+
+export type HomeContextValue = {
+    error: string | null,
+    isLoading: boolean,
+    cars: CarDataType[] | null,
+    fetchData: () => void,
+    deleteCar: (id: number) => void,
+    updateCar: (values: CarDataType) => void,
+    addCar: (newCar: CarDataType) => void,
+}

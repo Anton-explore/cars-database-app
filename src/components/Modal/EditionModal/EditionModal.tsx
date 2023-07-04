@@ -6,11 +6,6 @@ import {
 
 import CarComponent from '@/components/CarComponent'
 
-// type ErrorsType = Omit<CarDataType, 'id' | 'car_model_year' | 'availability'> & {
-//     car_model_year: string;
-//     availability: string;
-// }
-
 const EditionModal = ({ id }: { id: number }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
 

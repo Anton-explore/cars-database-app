@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-
+import { useHomeContext } from '../Home/HomeContext';
 import {
     Button,
     ModalFooter,
@@ -27,18 +27,12 @@ import {
     Field,
     Formik,
     Form,
-    FieldAttributes,
-    FormikHelpers,
-    FormikProps,
     FormikErrors,
     FieldProps
 } from 'formik';
 
-import { useFetchData } from '@/hooks/useFetchData'
 import { CarDataType } from '@/types/datatypes'
 import { generateId } from '@/utils/generateId'
-import { useAppDispatch } from '@/hooks/reduxHooks';
-import { addCarRequest, updateCarRequest } from '@/store/carsSlice';
 
 
 const initialFormState: CarDataType = {
@@ -55,9 +49,8 @@ const initialFormState: CarDataType = {
 type CarComponentProps = { id?: number; isOpen: boolean; onClose: () => void };
 
 const CarComponent = ({ id, onClose, isOpen }: CarComponentProps) => {
-    const dispatch = useAppDispatch();
     const toast = useToast()
-    const { cars, error } = useFetchData();
+    const { cars, error, updateCar, addCar } = useHomeContext();
     const updatedCar = cars?.find((car) => car.id === id);
 
     const [newCar, setNewCar] = useState<CarDataType>(initialFormState);
@@ -93,11 +86,9 @@ const CarComponent = ({ id, onClose, isOpen }: CarComponentProps) => {
 
     const savingHandler = (values: CarDataType) => {
         if (id) {
-            dispatch(updateCarRequest({ car: values, id }));
-            console.log(values);
+            updateCar(values)
         } else {
-            dispatch(addCarRequest({ car: values }));
-            console.log("Create: ", values);
+            addCar(values);
         }
         if (!error) {
             toast({
@@ -108,7 +99,6 @@ const CarComponent = ({ id, onClose, isOpen }: CarComponentProps) => {
             })
             onClose();
         }
-        
     }
 
     return (
@@ -147,7 +137,7 @@ const CarComponent = ({ id, onClose, isOpen }: CarComponentProps) => {
                                 {({ field }: FieldProps<CarDataType['car']>) => (
                                 <FormControl
                                     isDisabled={!!id}
-                                    isInvalid={errors.car && touched.car}>
+                                    isInvalid={!!errors.car && touched.car}>
                                     <FormLabel>Company</FormLabel>
                                     <Input {...field} placeholder='company' />
                                     <FormErrorMessage>{errors.car}</FormErrorMessage>
@@ -158,7 +148,7 @@ const CarComponent = ({ id, onClose, isOpen }: CarComponentProps) => {
                                 {({ field }: FieldProps<CarDataType['car_model']>) => (
                                 <FormControl
                                     isDisabled={!!id}
-                                    isInvalid={errors.car_model && touched.car_model}>
+                                    isInvalid={!!errors.car_model && touched.car_model}>
                                     <FormLabel>Model</FormLabel>
                                     <Input {...field} placeholder='car model' />
                                     <FormErrorMessage>{errors.car_model}</FormErrorMessage>
@@ -169,7 +159,7 @@ const CarComponent = ({ id, onClose, isOpen }: CarComponentProps) => {
                                 {({ field }: FieldProps<CarDataType['car_vin']>) => (
                                 <FormControl
                                     isDisabled={!!id}
-                                    isInvalid={errors.car_vin && touched.car_vin}>
+                                    isInvalid={!!errors.car_vin && touched.car_vin}>
                                     <FormLabel>VIN code</FormLabel>
                                     <Input {...field} placeholder='car VIN code' />
                                     <FormErrorMessage>{errors.car_vin}</FormErrorMessage>
@@ -180,7 +170,7 @@ const CarComponent = ({ id, onClose, isOpen }: CarComponentProps) => {
                                 {({ field, form }: FieldProps<CarDataType['car_model_year']>) => (
                                 <FormControl
                                     isDisabled={!!id}
-                                    isInvalid={errors.car_model_year && touched.car_model_year}>
+                                    isInvalid={!!errors.car_model_year && touched.car_model_year}>
                                     <FormLabel>Year</FormLabel>
                                     <NumberInput
                                         id='car_model_year'
@@ -202,7 +192,7 @@ const CarComponent = ({ id, onClose, isOpen }: CarComponentProps) => {
                             <Field name='car_color'>
                                 {({ field }: FieldProps<CarDataType['car_color']>) => (
                                 <FormControl
-                                    isInvalid={errors.car_color && touched.car_color}>
+                                    isInvalid={!!errors.car_color && touched.car_color}>
                                     <FormLabel>Color</FormLabel>
                                     <Input {...field} placeholder='car color' />
                                     <FormErrorMessage>{errors.car_color}</FormErrorMessage>
@@ -214,7 +204,18 @@ const CarComponent = ({ id, onClose, isOpen }: CarComponentProps) => {
                                 <FormControl>
                                     <FormLabel>Availability</FormLabel>
                                     <Flex align="center" gap="5px">
-                                        <Checkbox ml={3} id='availability' {...field} isChecked={field.value} />
+                                        {/* <input
+                                            type="checkbox"
+                                            id='availability'
+                                            {...field} 
+                                            isChecked={field.value as boolean}
+                                        />         */}
+                                        <Checkbox 
+                                            ml={3} 
+                                            id='availability' 
+                                            {...field} 
+                                            isChecked={field.value as boolean}
+                                        />
                                         <span>Available</span>
                                     </Flex>
                                 </FormControl>
@@ -223,9 +224,12 @@ const CarComponent = ({ id, onClose, isOpen }: CarComponentProps) => {
                             <Field name='price'>
                                 {({ field }: FieldProps<CarDataType['price']>) => (
                                 <FormControl
-                                    isInvalid={errors.price && touched.price}>
+                                    isInvalid={!!errors.price && touched.price}>
                                     <FormLabel>Price</FormLabel>
-                                    <Input {...field} placeholder='price' />
+                                    <Input 
+                                        {...field} 
+                                        placeholder='price'
+                                    />
                                     <FormErrorMessage>{errors.price}</FormErrorMessage>
                                 </FormControl>
                                 )}

@@ -58,7 +58,7 @@ const CarDataTable: FC<CarDataTable> = ({ columns, data, globalFilter, setGlobal
 
     return (
     <TableContainer 
-        backgroundColor="#FFFFFF"  
+        backgroundColor="#fff"  
         borderRadius="8px" 
         padding="18px" 
         display="flex" 
