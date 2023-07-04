@@ -204,17 +204,11 @@ const CarComponent = ({ id, onClose, isOpen }: CarComponentProps) => {
                                 <FormControl>
                                     <FormLabel>Availability</FormLabel>
                                     <Flex align="center" gap="5px">
-                                        {/* <input
-                                            type="checkbox"
-                                            id='availability'
-                                            {...field} 
-                                            isChecked={field.value as boolean}
-                                        />         */}
                                         <Checkbox 
                                             ml={3} 
                                             id='availability' 
                                             {...field} 
-                                            isChecked={field.value as boolean}
+                                            isChecked={field.value}
                                         />
                                         <span>Available</span>
                                     </Flex>

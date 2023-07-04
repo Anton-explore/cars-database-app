@@ -6,7 +6,6 @@ import {
     MenuItem,
     MenuList,
 } from "@chakra-ui/react"
-import { useState } from "react"
 
 import EditionModal from "@/components/Modal/EditionModal/EditionModal"
 import DeletionModal from "../Modal/DeletionModal/DeletionModal";
