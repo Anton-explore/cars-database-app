@@ -57,7 +57,8 @@ const CarComponent = ({ id, onClose, isOpen }: CarComponentProps) => {
 
     useEffect(() => { 
         if (updatedCar) {
-            setNewCar(updatedCar);
+            const preparedCar = {...updatedCar, price: updatedCar.price.replace("$", "")}
+            setNewCar(preparedCar);
         }
     }, [updatedCar]);
 
@@ -77,8 +78,8 @@ const CarComponent = ({ id, onClose, isOpen }: CarComponentProps) => {
         }
         if (!values.price) {
         errors.price = "Car price is required"
-        } else if (!/^\$/.test(values.price)) {
-            errors.price = "Type '$' sign before price"
+        } else if (isNaN(+values.price)) {
+            errors.price = "Only numbers, please"
         }
         return errors
     }
@@ -117,7 +118,8 @@ const CarComponent = ({ id, onClose, isOpen }: CarComponentProps) => {
                     initialValues={newCar}
                     validate={validate}
                     onSubmit={(values, actions) => {
-                        savingHandler(values);
+                        const prepValues = {...values, price: `$${values.price}`}
+                        savingHandler(prepValues);
                         actions.setSubmitting(false);
                         actions.resetForm();
                         onClose();
@@ -128,7 +130,6 @@ const CarComponent = ({ id, onClose, isOpen }: CarComponentProps) => {
                         touched,
                         dirty,
                         isSubmitting,
-                        values,
                         isValid,
                 }) => (
                     
